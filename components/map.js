@@ -180,6 +180,11 @@ const Map = () => {
 
   const getCurPosReal = async() => {
     try {
+      
+      wifilist.map((index,key) => {
+        wifilist[key] = {rssi : index.level, bssid : index.BSSID};
+      })
+      console.log(wifilist);
       let url = "http://3.35.198.100:3000/rest/user";
       let options = {
             method: 'POST',
@@ -189,7 +194,9 @@ const Map = () => {
                 'Content-Type': 'application/json;charset=UTF-8'
             },
             body: JSON.stringify({
-              wifilist
+              wifi_data : [
+                ...wifilist
+              ]
             })
         };
         let response = await fetch(url, options);
@@ -200,7 +207,7 @@ const Map = () => {
           data = await response.json();
         }
         //console.log(data)
-        setCurPosReal(data.curPosition);
+        setCurPosReal(data.curPos);
     } catch(err) {
       console.log(err);
     }
@@ -253,7 +260,7 @@ const Map = () => {
         justifyContent: "center",
         alignItems : "center",
       }} onPress={deterFunc ? requestWifiPermission : requestWifiPermission2}>
-        <Text style={{fontSize : 15, fontWeight : "bold"}}>내 정확한 실내 위치는 ??</Text>
+        <Text style={{fontSize : 15, fontWeight : "bold"}}>현재 내위치 체크인 하기</Text>
       </TouchableOpacity>
     </Animated.View>
     
@@ -279,9 +286,12 @@ const Map = () => {
         alignItems : "center",
       }}>
         <Text style = {{
-          height : 70 + "%",
-        }}> Icon </Text>
-        <Text> {curPosReal} </Text>
+          fontSize : 20,
+          fontWeight : "bold",
+          marginBottom : 10,
+          marginTop : 10,
+        }}> {curPosReal} </Text>
+        <Text> 을 체크인 히스토리에 추가하였습니다. </Text>
         <TouchableOpacity style={{
           width : 30,
           height: 30,
@@ -310,7 +320,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f5f5',
     position : 'absolute',
     bottom : 15,
-    left : 15,
+    right : 15,
     //IOS
     shadowColor: "#000000", //그림자색
     shadowOpacity: 0.3,//그림자 투명도
