@@ -77,7 +77,7 @@ const CheckIn = () => {
       </ScrollView>
       <View>
         <TouchableOpacity onPress={getCheckInData} style={styles.roundButton}>
-          <Text style={{fontWeight : "bold",}}>Reload</Text>
+          <Text style={{fontWeight : "bold", fontSize : 10}}>Reload</Text>
         </TouchableOpacity>  
       </View> 
     </>
